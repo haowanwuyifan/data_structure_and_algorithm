@@ -1,12 +1,12 @@
 /*------------------------------------------------------------------------------
- * @file    HZOJ45.CPP
+ * @file    SHIFT_AND.CPP
  * @author  FIRMWARE TEAM 
- * @date    2024/01/24 11:37:19
+ * @date    2024/03/13 10:46:40
  * @brief   THIS FILE PROVIDES ALL THE FIRMWARE FUNCTIONS.
  * -----------------------------------------------------------------------------
 
 /* Define to prevent recursive inclusion  ------------------------------------*/
-#define _HZOJ45_C_
+#define _SHIFT_AND_C_
 
 /* Files includes  -----------------------------------------------------------*/
 #include <iostream>
@@ -18,32 +18,38 @@
 #include <string>
 #include <map>
 #include <set>
-#include <cstring>
 #include <vector>
 
 using namespace std;
 
-#define MAX_N 1000
-char s1[MAX_N + 5], s2[MAX_N + 5];
-int dp[MAX_N + 5][MAX_N + 5] = {0};
+#define TEST(func, s, t) { \
+    printf("%s(%s, %s) = %d\n", #func, s, t, func(s, t)); \
+}
+
+int shift_and(const char* s, const char* t)
+{
+    int code[256] = {0}, n = 0;
+    for(n=0; t[n]; n++) code[t[n]] |= (1 << n);
+    int p = 0;
+    for(int i=0; s[i]; i++)
+    {
+        p = (p << 1 | 1) & code[s[i]];
+        if(p & (1 << (n - 1))) return i - n + 1;
+    }
+    return -1;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
 int main()
 {
-    scanf("%s%s", s1 + 1, s2 + 1);
-    int n = strlen(s1), m = strlen(s2);
-    for(int i=1; i<=n; i++)
+    char s[100], t[100];
+    while(~scanf("%s%s", s, t))
     {
-        for(int j=1; j<=m; j++)
-        {
-            dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
-            if(s1[i] == s2[j])
-            {
-                dp[i][j] = max(dp[i][j], dp[i-1][j-1] + 1);
-            }
-        }
+        TEST(shift_and, s, t);
     }
-    printf("%d\n", dp[n][m]);
+
+
     return 0;
 }

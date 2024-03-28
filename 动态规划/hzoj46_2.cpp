@@ -45,6 +45,7 @@ void extract(int i, int j)
         g[i].push_back(j-1);
         i++, j--;
     }
+    return ;
 }
 
 
@@ -62,7 +63,6 @@ int main()
     for(int i=1; s[i]; i++)
     {
         dp[i] = i;
-        if(is_palindrome(1, i))
         for(auto j : g[i])
         {
             dp[i] = min(dp[i], dp[j] + 1);
