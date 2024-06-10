@@ -1,34 +1,30 @@
-#include<iostream>
-#include<string>
-#include<cstring>
+#include <iostream>
+#include <string>
+#include <vector>
+
+#define BASE (1000000000 + 7)
 
 using namespace std;
 
-int letter[26];
-
-int Add(int index, int n)
-{
-    return (index + 1) % n;
-}
-
-int length(int n)
-{
-    
-}
-
-int main()
-{
-    string str;
-    string pattern;
-    int start;
-    cin>>str>>pattern>>start;
-    int strl = str.size();
-    int pl = pattern.size();
-    int sign = 0;
-    memset(letter,-1,sizeof(letter));
-    while(sign<pl)
+int main() {
+    int n;
+    cin >> n;
+    string s;
+    cin >> s;
+    vector<int> cnt(26, 0);
+    vector<int> dp(n + 1, 0);
+    //int ans = 0;
+    for(int i=0; s[i]; i++)
     {
-
+        int ind = s[i] - 'a';
+        cnt[ind] += 1;
+        long long num = 0;
+        for(int j=0; j<26; j++)
+        {
+            if(j == ind) continue;
+            num = (num + cnt[j]) % BASE;
+        }
+        dp[i + 1] = (dp[i] + num) % BASE;
     }
+    return dp[n];
 }
-
